@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Phone { get; set; }
-        public Book[] Books { get; set; }
+        public ICollection<Book> Books { get; set; }
         public string Password { get; set; }
 
     }

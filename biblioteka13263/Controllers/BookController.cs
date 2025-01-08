@@ -6,16 +6,28 @@ namespace biblioteka13263.Controllers
 {
     public class BookController : Controller
     {
+        private readonly BooksDbContext _context;
+
+
+
+        public BookController(BooksDbContext context)
+
+        {
+
+            _context = context;
+
+        }
         private static IList<Book> books = new List<Book>
         {
-            new Book(){ISBN =1, Name="Film1", Description = "opis1", Author="keszke" },
-            new Book(){ISBN =1, Name="Film1", Description = "opis1", Author="keszke" },
-            new Book(){ISBN =1, Name="Film1", Description = "opis1", Author="keszke" },
+            new Book(){ISBN =1, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime() },
+            new Book(){ISBN =2, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime()  },
+            new Book(){ISBN =3, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime()  },
         };
         // GET: BookController
         public ActionResult Index()
         {
-            return View(books);
+
+            return View(_context.Books);
         }
 
         // GET: BookController/Details/5

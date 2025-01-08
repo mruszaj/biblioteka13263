@@ -7,7 +7,7 @@ namespace biblioteka13263.Models
         public int Id { get; set; }
         public Client Client { get; set; }
         public Worker Worker { get; set; }
-        public Book[] Books { get; set; }
+        public ICollection<Book> Books { get; set; }
         public DateTime Data {  get; set; }
         public int Status { get; set; }
         public bool Type { get; set; }
