@@ -1,32 +1,53 @@
 ﻿using biblioteka13263.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace biblioteka13263.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BooksDbContext _context;
+        private readonly LibraryDbContext _context;
 
 
 
-        public BookController(BooksDbContext context)
+        public BookController(LibraryDbContext context)
 
         {
 
             _context = context;
 
         }
-        private static IList<Book> books = new List<Book>
-        {
-            new Book(){ISBN =1, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime() },
-            new Book(){ISBN =2, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime()  },
-            new Book(){ISBN =3, Name="Film1", Description = "opis1", Author="keszke", IsAvilible=true , WhenAvilable=new DateTime()  },
-        };
+
         // GET: BookController
         public ActionResult Index()
         {
 
+
+
+            
+                var genre1 = new Genre { Name = "Fiction", Description = "ssdeee" };
+                var genre2 = new Genre { Name = "Adventure", Description ="sadasd"  };
+
+                var book = new Book
+                {   
+                    ISBN = "1231231231",
+                    Name = "The Adventure of Learning",
+                    Author = "John Doe",
+                    Description ="sadasd",
+                    IsAvilible=true,
+                    WhenAvilable=new DateTime(),
+                    BookGenre = new List<BookGenre>
+                    
+        {
+            new BookGenre { Genre = genre1 },
+            new BookGenre { Genre = genre2 }
+        }
+                };
+
+                _context.Books.Add(book);
+                _context.SaveChanges();
+            
             return View(_context.Books);
         }
 
