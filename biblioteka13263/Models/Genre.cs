@@ -9,7 +9,6 @@ namespace biblioteka13263.Models
         [Required]
         public string Name { get; set; }
 
-        public string Description { get; set; }
         public ICollection<BookGenre> BookGenre { get; set; }
     }
 }

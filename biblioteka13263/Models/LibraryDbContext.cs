@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using biblioteka13263.Models;
 namespace biblioteka13263.Models
 {
 public class LibraryDbContext : DbContext
@@ -46,6 +47,7 @@ public class LibraryDbContext : DbContext
 : base(options)
         {
         }
+    public DbSet<biblioteka13263.Models.BookView> BookView { get; set; } = default!;
 
     }
 
