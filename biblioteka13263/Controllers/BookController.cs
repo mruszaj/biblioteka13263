@@ -14,7 +14,7 @@ namespace biblioteka13263.Controllers
     public class BookController : Controller
     {
         private readonly LibraryDbContext _context;
-        //public int clientId;
+
 
 
         public BookController(LibraryDbContext context)
@@ -22,7 +22,7 @@ namespace biblioteka13263.Controllers
         {
 
             _context = context;
-            //clientId = 1;
+
                 
             // #### tu odkomentować żeby zrobić gatunki ####
                 
@@ -114,7 +114,6 @@ namespace biblioteka13263.Controllers
 
 var model = new BookCreate
         {
-            // Populate Genres from the database
             Genres = _context.Genres
                 .Select(g => new SelectListItem
                 {
@@ -131,21 +130,10 @@ var model = new BookCreate
         [ValidateAntiForgeryToken]
         public ActionResult Create(BookCreate model)
         {
-            //model.Genres = new List<SelectListItem> {null };
-            //Debug.WriteLine($"Model received: ISBN={model.ISBN}, Name={model.SelectedGenreIds[0]}");
-
-            //if (!ModelState.IsValid)
-            //{
-            //    // Log all the validation errors to see what's wrong
-            //    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            //    {
-            //        Debug.WriteLine($"Validation error: {error.ErrorMessage}");
-            //    }
-            //}
-            // if (ModelState.IsValid)
+            
             if (model.SelectedGenreIds != null && model.SelectedGenreIds.Any())
             {
-            //    Debug.WriteLine("model valid");
+
                 var book = new Book
                 {
                     Name = model.Name,
@@ -155,9 +143,6 @@ var model = new BookCreate
                     Description = model.Description,
                     IsAvilible=true,
                     WhenAvilable=DateTime.Now
-
-
-
                 };
 
 
@@ -166,9 +151,7 @@ var model = new BookCreate
                 _context.SaveChanges();  
 
 
-
-                
-                    var bookGenres = model.SelectedGenreIds.Select(genreId => new BookGenre
+          var bookGenres = model.SelectedGenreIds.Select(genreId => new BookGenre
                     {
                         BookId = book.Id,
                         GenreId = genreId
@@ -181,7 +164,6 @@ var model = new BookCreate
                 return RedirectToAction(nameof(Index));  
             }
            
-            // Repopulate genres if the form was invalid
             model.Genres = _context.Genres
                 .Select(g => new SelectListItem
                 {
@@ -245,16 +227,11 @@ var model = new BookCreate
                 return NotFound();
             }
 
-            // Update book entity with BookCreate data
             book.ISBN = bookCreate.ISBN;
             book.Name = bookCreate.Name;
             book.Description = bookCreate.Description;
             book.Author = bookCreate.Author;
-
-            // Handle BookGenre
             var existingGenres = _context.BookGenres.Where(bg => bg.BookId == book.Id).ToList();
-
-            // Remove genres not selected
             foreach (var existingGenre in existingGenres)
             {
                 if (!bookCreate.SelectedGenreIds.Contains(existingGenre.GenreId))
@@ -262,8 +239,6 @@ var model = new BookCreate
                     _context.BookGenres.Remove(existingGenre);
                 }
             }
-
-            // Add new genres
             foreach (var genreId in bookCreate.SelectedGenreIds)
             {
                 if (!existingGenres.Any(bg => bg.GenreId == genreId))
@@ -300,24 +275,11 @@ var model = new BookCreate
                 return NotFound();
             }
 
-            _context.Books.Remove(book); // Remove the book from the list (or database in real application)
+            _context.Books.Remove(book); 
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-        //// POST: BookController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+
         // GET: Book/Borrow/1 (Borrow Book)
         public ActionResult Borrow(int id)
         {
@@ -327,11 +289,11 @@ var model = new BookCreate
 
             if (book == null || !book.IsAvilible)
             {
-                return NotFound(); // Book is either not found or already borrowed
+                return NotFound(); 
             }
 
             
-            return View(book);  // Show the Borrow form for the selected book
+            return View(book); 
         }
 
         // POST: Book/Borrow/1
@@ -346,7 +308,7 @@ var model = new BookCreate
 
             if (book == null || !book.IsAvilible)
             {
-                return NotFound();  // Book is either not found or already borrowed
+                return NotFound();  
             }
             var client = _context.Clients
                .Where(b => b.Id == User.FindFirstValue(ClaimTypes.NameIdentifier))
@@ -363,41 +325,16 @@ var model = new BookCreate
                 _context.Clients.Add(client);
                 _context.SaveChanges();
             }
-            //var client = _context.Clients
-            //    .Where(c => c.Id == clientId)
-            //    .FirstOrDefault();
 
-            //if (client == null)
-            //{
-            //    return NotFound();  // Client not found
-            //}
-
-            // Assign the book to the client and mark it as not available
             book.ClientId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             book.IsAvilible = false;
             book.WhenAvilable = DateTime.Now.AddMonths(1);
 
-            // Add the book to the client's borrowed books list
-            //client.Books.Add(book);
-
-            // Save changes to the database
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(Index));  // Redirect to the list of books
+            return RedirectToAction(nameof(Index)); 
         }
-        //public ActionResult Return(int id)
-        //{
-        //    var book = _context.Books
-        //        .Where(b => b.Id == id && !b.IsAvilible)
-        //        .FirstOrDefault();
-
-        //    if (book == null)
-        //    {
-        //        return NotFound();  // Book not found or wasn't borrowed
-        //    }
-
-        //    return View(book);  // Show the Return view for the borrowed book
-        //}
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Return(int id, IFormCollection collection)
@@ -409,28 +346,11 @@ var model = new BookCreate
 
             if (book == null)
             {
-                return NotFound();  // Book not found or wasn't borrowed
+                return NotFound(); 
             }
-
-
-            // Find the client who borrowed the book
-            //var client = _context.Clients
-            //    .Where(c => c.Id == book.ClientId)
-            //    .FirstOrDefault();
-
-            //if (client == null)
-            //{
-            //    return NotFound();  // Client not found
-            //}
-
-            // Mark the book as available
             book.IsAvilible = true;
             book.ClientId = null;        
             book.WhenAvilable = DateTime.Now;
-            // Remove the book from the client's borrowed books list
-            //client.Books.Remove(book);
-
-            // Save changes to the database
             _context.SaveChanges();
 
             return RedirectToAction(nameof(BorrowedBooks), new { id = User.FindFirstValue(ClaimTypes.NameIdentifier)});
@@ -454,18 +374,18 @@ var model = new BookCreate
                 _context.Clients.Add(client);
                 _context.SaveChanges();
             }
-            // Retrieve the client by id, including the books they borrowed
+           
                  client = _context.Clients
                 .Where(c => c.Id == id)
-                .Include(c => c.Books)  // Include the Books navigation property
+                .Include(c => c.Books)  
                 .FirstOrDefault();
 
             if (client == null)
             {
-                return NotFound();  // Client not found
+                return NotFound(); 
             }
 
-            return View(client);  // Return the client with the list of borrowed books
+            return View(client);  
         }
 
     }

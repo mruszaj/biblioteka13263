@@ -12,8 +12,8 @@ using biblioteka13263.Models;
 namespace biblioteka13263.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20250109190730_druga3")]
-    partial class druga3
+    [Migration("20250109202923_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

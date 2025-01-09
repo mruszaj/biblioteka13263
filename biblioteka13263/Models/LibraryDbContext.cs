@@ -38,11 +38,11 @@ public class LibraryDbContext : DbContext
                 .HasForeignKey(b => b.ClientId);
 
             modelBuilder.Entity<Client>()
-            .HasKey(b => b.Id); // Primary key configuration
+            .HasKey(b => b.Id); 
 
             modelBuilder.Entity<Client>()
                 .Property(b => b.Id)
-                .ValueGeneratedNever(); // Prevents EF from auto-generating values for Id
+                .ValueGeneratedNever(); 
 
 
         }
