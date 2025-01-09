@@ -6,22 +6,37 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace biblioteka13263.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class druga3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clients",
+                name: "BookView",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Login = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAvilible = table.Column<bool>(type: "bit", nullable: false),
+                    WhenAvilable = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookView", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,30 +49,11 @@ namespace biblioteka13263.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Login = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,7 +66,7 @@ namespace biblioteka13263.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: true),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     IsAvilible = table.Column<bool>(type: "bit", nullable: false),
                     WhenAvilable = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -117,18 +113,6 @@ namespace biblioteka13263.Migrations
                 name: "IX_Books_ClientId",
                 table: "Books",
                 column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Clients_Login",
-                table: "Clients",
-                column: "Login",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Workers_Login",
-                table: "Workers",
-                column: "Login",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -138,7 +122,7 @@ namespace biblioteka13263.Migrations
                 name: "BookGenres");
 
             migrationBuilder.DropTable(
-                name: "Workers");
+                name: "BookView");
 
             migrationBuilder.DropTable(
                 name: "Books");

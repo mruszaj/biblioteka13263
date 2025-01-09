@@ -12,7 +12,7 @@ public class LibraryDbContext : DbContext
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookGenre> BookGenres { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<Worker> Workers { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,12 +36,15 @@ public class LibraryDbContext : DbContext
                 .HasMany(c => c.Books)
                 .WithOne(b => b.Client)
                 .HasForeignKey(b => b.ClientId);
-            modelBuilder.Entity<Worker>()
-                .HasIndex(b => b.Login)
-                .IsUnique();
+
             modelBuilder.Entity<Client>()
-               .HasIndex(b => b.Login)
-               .IsUnique();
+            .HasKey(b => b.Id); // Primary key configuration
+
+            modelBuilder.Entity<Client>()
+                .Property(b => b.Id)
+                .ValueGeneratedNever(); // Prevents EF from auto-generating values for Id
+
+
         }
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
 : base(options)

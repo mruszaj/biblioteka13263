@@ -7,6 +7,7 @@ namespace biblioteka13263.Models
     public class BookCreate
     {
         [Required]
+        [MaxLength(13)]
         public string ISBN { get; set; }
         [Required]
         public string Name { get; set; }

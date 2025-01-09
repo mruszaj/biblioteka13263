@@ -14,7 +14,7 @@ namespace biblioteka13263.Models
         public string Author { get; set; }
         public string Genres { get; set; }
 
-        public Client Client { get; set; }  
+        public string ClientEmail { get; set; }  
         public bool IsAvilible { get; set; }
         public DateTime WhenAvilable { get; set; }
     }

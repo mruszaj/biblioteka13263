@@ -1,6 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Directly getting the user ID
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - biblioteka13263</title>
@@ -25,11 +30,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Client" asp-action="Index">Login</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                               <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="BorrowedBooks" asp-route-id="@userId">Borrowed Books</a>
+                            </li>
+                        }
                     </ul>
                 </div>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

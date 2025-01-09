@@ -1,0 +1,36 @@
+﻿@model biblioteka13263.Models.Client
+
+@{
+    ViewData["Title"] = "Books Borrowed by " + User.Identity.Name;
+}
+
+<h1>Books Borrowed by @User.Identity.Name</h1>
+
+@if (Model.Books != null && Model.Books.Any())
+{
+    <ul>
+        @foreach (var book in Model.Books)
+        {
+            <li>
+                <strong>@book.Name</strong> (ISBN: @book.ISBN)<br />
+                Author: @book.Author<br />
+                Description: @book.Description<br />
+
+                <form asp-action="Return" method="post">
+
+                    <input type="hidden" name="Id" asp-for="Id" value="@book.Id" />
+                    <button type="submit" class="btn btn-danger">Return Book</button>
+                </form>
+            </li>
+
+        }
+    </ul>
+}
+else
+{
+    <p>No books borrowed by this client.</p>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

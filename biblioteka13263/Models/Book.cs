@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace biblioteka13263.Models
@@ -18,9 +19,11 @@ namespace biblioteka13263.Models
         public ICollection<BookGenre> BookGenre { get; set; }
 
         // Foreign key to Client
-        public int? ClientId { get; set; }  // Nullable in case the book is not assigned to any client
+        public string? ClientId { get; set; }  // Nullable in case the book is not assigned to any client
         public Client Client { get; set; }  // Navigation property to Client
+        [DefaultValue(true)]
         public bool IsAvilible {  get; set; }
+
         public DateTime WhenAvilable { get; set; }
     }
 }

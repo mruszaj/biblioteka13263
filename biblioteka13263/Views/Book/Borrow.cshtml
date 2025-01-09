@@ -1,0 +1,64 @@
+﻿@model biblioteka13263.Models.Book
+
+@{
+    ViewData["Title"] = "Borrow Book";
+}
+
+<h1>Borrow Book: @Model.Name</h1>
+
+
+
+
+<div>
+    <h4>BookView</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsAvilible)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsAvilible)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WhenAvilable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WhenAvilable)
+        </dd>
+    </dl>
+    
+    <form asp-action="Borrow" method="post">
+        @if (Model.IsAvilible)
+        {
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <input type="submit" value="Borrow" class="btn btn-danger" />
+
+        }
+       
+     |  <a asp-action="Index">Back to List</a>
+    </form>
+</div>

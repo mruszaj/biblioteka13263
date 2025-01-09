@@ -1,14 +1,28 @@
 ﻿@model IEnumerable<biblioteka13263.Models.BookView>
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Identity
+
+@inject  UserManager<User> userManager;
+@inject IHttpContextAccessor _context;
+
 
 @{
     ViewData["Title"] = "Index";
+    var user =await userManager.GetUserAsync(_context.HttpContext.User);
+    var administrator = false;
+    if (user != null)
+        administrator = user.Administrator;
 }
 
 <h1>Index</h1>
-
+ @if (administrator)
+                    {
 <p>
+
     <a asp-action="Create">Create New</a>
 </p>
+                    }
 <table class="table">
     <thead>
         <tr>
@@ -49,9 +63,14 @@
                 @Html.DisplayFor(modelItem => item.Genres)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new {id=item.Id  }) |
+                    @if (administrator)
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                <span> | </span>
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                } 
+                |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) 
             </td>
         </tr>
 }
